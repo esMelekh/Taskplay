@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let addCategoryButton = document.getElementById('add-category');
     let categoriesContainer = document.getElementById('categories');
     let categories = [];
+    let backButton = document.getElementById('back-button');
 
     // Функция для обновления списка категорий
     function updateCategories() {
@@ -52,5 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter' && !addCategoryButton.disabled) {
             addNewCategory();
         }
+    });
+
+    // Обработчик кнопки возврата
+    backButton.addEventListener('click', () => {
+        window.history.back();
     });
 });
