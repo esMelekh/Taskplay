@@ -44,6 +44,7 @@ h1, h2 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #start-button:hover {
@@ -69,6 +70,7 @@ h1, h2 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #add-category:hover {
@@ -109,8 +111,30 @@ h1, h2 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .task-item button:hover {
     background-color: #e04300;
+}
+
+/* Стили для анимации стикера */
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.sticker {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-image: url('images/sticker.png');
+    background-size: cover;
+    animation: fadeInOut 2s;
+    pointer-events: none;
+    z-index: 1000;
 }
