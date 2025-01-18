@@ -1,96 +1,33 @@
-// Обновленный JavaScript для skills.html
+// JavaScript для index.html
 
-let categories = ['General'];
+document.addEventListener('DOMContentLoaded', () => {
+    let selectedAvatar = null;
 
-const newCategoryInput = document.getElementById('new-category');
-const addCategoryButton = document.getElementById('add-category');
-const categoriesContainer = document.getElementById('categories');
+    // Получаем все элементы аватаров
+    const avatars = document.querySelectorAll('.avatar');
+    const startButton = document.getElementById('start-button');
 
-// Функция для обновления списка категорий
-function updateCategories() {
-    categoriesContainer.innerHTML = '';
-    categories.forEach(category => {
-        const button = document.createElement('button');
-        button.className = 'category-button';
-        button.textContent = category;
-        button.onclick = () => {
-            window.location.href = `tasks.html?category=${encodeURIComponent(category)}`;
-        };
-        categoriesContainer.appendChild(button);
+    // Добавляем обработчик событий для каждого аватара
+    avatars.forEach(avatar => {
+        avatar.addEventListener('click', () => {
+            // Убираем выделение у всех аватаров
+            avatars.forEach(a => a.classList.remove('selected'));
+            // Добавляем выделение выбранному аватару
+            avatar.classList.add('selected');
+            // Устанавливаем выбранный аватар
+            selectedAvatar = avatar.id;
+            // Активируем кнопку "Начать"
+            startButton.disabled = false;
+        });
     });
-}
 
-// Функция для добавления новой категории
-addCategoryButton.addEventListener('click', () => {
-    const newCategory = newCategoryInput.value.trim();
-    if (newCategory && !categories.includes(newCategory)) {
-        categories.push(newCategory);
-        newCategoryInput.value = '';
-        updateCategories();
-
-        // Создание новой страницы для задач
-        createTasksPage(newCategory);
-    } else if (categories.includes(newCategory)) {
-        alert('Категория уже существует!');
-    } else {
-        alert('Пожалуйста, введите корректное название категории.');
-    }
+    // Добавляем обработчик событий для кнопки "Начать"
+    startButton.addEventListener('click', () => {
+        if (selectedAvatar) {
+            // Переходим на страницу категорий
+            window.location.href = 'skills.html';
+        } else {
+            alert('Пожалуйста, выберите аватара.');
+        }
+    });
 });
-
-// Функция для создания страницы задач
-function createTasksPage(category) {
-    const tasksPageContent = `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tasks for ${category}</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <div class="tasks-page">
-            <h1>Tasks for ${category}</h1>
-            <ul id="task-list">
-                <!-- Задачи будут добавлены здесь -->
-            </ul>
-            <div id="add-task">
-                <input type="text" id="task-name" placeholder="Enter task name">
-                <button id="add-task-button">Add Task</button>
-            </div>
-        </div>
-        <script>
-            const taskList = document.getElementById('task-list');
-            const addTaskButton = document.getElementById('add-task-button');
-            const taskNameInput = document.getElementById('task-name');
-
-            addTaskButton.addEventListener('click', () => {
-                const taskName = taskNameInput.value.trim();
-                if (taskName) {
-                    const li = document.createElement('li');
-                    li.className = 'task-item';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    li.appendChild(checkbox);
-                    const span = document.createElement('span');
-                    span.textContent = taskName;
-                    li.appendChild(span);
-                    taskList.appendChild(li);
-                    taskNameInput.value = '';
-                } else {
-                    alert('Please enter a valid task name.');
-                }
-            });
-        </script>
-    </body>
-    </html>
-    `;
-
-    const blob = new Blob([tasksPageContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    // Сохраняем URL в локальное хранилище для дальнейшего использования
-    localStorage.setItem(`tasks-${category}`, url);
-}
-
-// Инициализация страницы
-updateCategories();
