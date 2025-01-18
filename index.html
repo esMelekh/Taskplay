@@ -8,21 +8,39 @@
 </head>
 <body>
     <h1>Task Tracker with Levels</h1>
+    <div id="avatar-selection">
+        <h2>Choose Your Avatar</h2>
+        <div id="avatar-options">
+            <!-- Avatar options will be added here -->
+        </div>
+    </div>
     <div id="level-info">
         <p>Current Level: <span id="current-level">1</span></p>
         <p>Experience: <span id="current-exp">0</span> / <span id="required-exp">100</span></p>
     </div>
+    <div id="categories">
+        <h2>Categories</h2>
+        <select id="category-select">
+            <option value="default">Select a Category</option>
+            <!-- Categories will be added here -->
+        </select>
+        <button id="add-category-button">Add New Category</button>
+    </div>
     <div id="tasks">
         <h2>Tasks</h2>
+        <select id="task-category-select">
+            <option value="default">Select a Category</option>
+            <!-- Categories will be added here -->
+        </select>
+        <input type="text" id="task-name" placeholder="Task Name">
+        <select id="task-weight">
+            <option value="1">1 Exp</option>
+            <option value="2">2 Exp</option>
+        </select>
+        <button id="add-task-button">Add Task</button>
         <ul id="task-list">
             <!-- Tasks will be added here -->
         </ul>
-    </div>
-    <div id="add-task">
-        <h2>Add New Task</h2>
-        <input type="text" id="task-name" placeholder="Task Name">
-        <input type="number" id="task-exp" placeholder="Experience Gained">
-        <button id="add-button">Add Task</button>
     </div>
     <script src="script.js"></script>
 </body>
