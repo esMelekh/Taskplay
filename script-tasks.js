@@ -7,12 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('task-list');
     const addTaskButton = document.getElementById('add-task-button');
     const taskNameInput = document.getElementById('task-name');
+    const backButton = document.getElementById('back-button');
 
     categoryTitle.textContent += category;
 
-    // Загружаем задачи из локального хранилища
+    // Загружаем задачи и баллы из локального хранилища
     const tasksKey = `tasks-${category}`;
+    const scoreKey = `score-${category}`;
     let tasks = JSON.parse(localStorage.getItem(tasksKey)) || [];
+    let score = parseInt(localStorage.getItem(scoreKey)) || 0;
 
     // Отображаем задачи
     function displayTasks() {
@@ -25,15 +28,30 @@ document.addEventListener('DOMContentLoaded', () => {
             checkbox.checked = task.completed;
             checkbox.onchange = () => {
                 task.completed = checkbox.checked;
-                // Добавьте логику для анимации стикера здесь
                 if (task.completed) {
-                    // С вероятностью 50% вызвать функцию для показа стикера
-                    const random = Math.random();
-                    if (random < 0.5) {
-                        showSticker();
+                    score += 1;
+                    localStorage.setItem(scoreKey, score);
+                    if (score >= 100) {
+                        alert(`Congratulations! You have mastered ${category}!`);
+                        // Удаляем навык и перезагружаем страницу
+                        categories.splice(categories.indexOf(category), 1);
+                        localStorage.setItem('categories', JSON.stringify(categories));
+                        window.location.href = 'skills.html';
+                    } else {
+                        // С вероятностью 50% вызвать функцию для показа стикера
+                        const random = Math.random();
+                        if (random < 0.5) {
+                            showSticker();
+                        }
+                        saveTasks();
+                        displayTasks();
                     }
+                } else {
+                    score -= 1;
+                    localStorage.setItem(scoreKey, score);
+                    saveTasks();
+                    displayTasks();
                 }
-                saveTasks();
             };
             li.appendChild(checkbox);
             const span = document.createElement('span');
@@ -54,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (taskName) {
             tasks.push({ name: taskName, completed: false });
             taskNameInput.value = '';
-            displayTasks();
             saveTasks();
+            displayTasks();
         } else {
             alert('Please enter a valid task name.');
         }
@@ -82,4 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             sticker.remove();
         }, 2000);
     }
+
+    // Обработчик кнопки возврата
+    backButton.addEventListener('click', () => {
+        window.history.back();
+    });
 });
