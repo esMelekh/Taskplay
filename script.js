@@ -1,125 +1,116 @@
-let currentLevel = 1;
-let currentExp = 0;
-const requiredExpPerLevel = 100;
-const categories = ['General'];
-const tasks = [];
 let selectedAvatar = null;
 
-const currentLevelElem = document.getElementById('current-level');
-const currentExpElem = document.getElementById('current-exp');
-const requiredExpElem = document.getElementById('required-exp');
-const categorySelect = document.getElementById('category-select');
-const addCategoryButton = document.getElementById('add-category-button');
-const taskCategorySelect = document.getElementById('task-category-select');
-const taskNameInput = document.getElementById('task-name');
-const taskWeightSelect = document.getElementById('task-weight');
-const addTaskButton = document.getElementById('add-task-button');
-const taskListElem = document.getElementById('task-list');
-const avatarOptions = document.getElementById('avatar-options');
-const newCategoryNameInput = document.getElementById('new-category-name');
+// Главная страница
+const avatars = document.querySelectorAll('.avatar');
+const startButton = document.getElementById('start-button');
 
-const avatars = [
-    { src: 'avatar1.png', name: 'Avatar 1' },
-    { src: 'avatar2.png', name: 'Avatar 2' },
-    { src: 'avatar3.png', name: 'Avatar 3' },
-    // Добавьте больше аватаров по мере необходимости
-];
+avatars.forEach(avatar => {
+    avatar.addEventListener('click', () => {
+        avatars.forEach(a => a.style.border = '2px solid transparent');
+        avatar.style.border = '2px solid #ff4500';
+        selectedAvatar = avatar.id;
+    });
+});
+
+startButton.addEventListener('click', () => {
+    if (selectedAvatar) {
+        window.location.href = 'skills.html';
+    } else {
+        alert('Пожалуйста, выберите аватара.');
+    }
+});
+
+// Страница с категориями
+let categories = ['General'];
+
+const newCategoryInput = document.getElementById('new-category');
+const addCategoryButton = document.getElementById('add-category');
+const categoriesContainer = document.getElementById('categories');
 
 function updateCategories() {
-    categorySelect.innerHTML = '<option value="default">Select a Category</option>';
-    taskCategorySelect.innerHTML = '<option value="default">Select a Category</option>';
+    categoriesContainer.innerHTML = '';
     categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-        const taskOption = document.createElement('option');
-        taskOption.value = category;
-        taskOption.textContent = category;
-        taskCategorySelect.appendChild(taskOption);
-    });
-}
-
-function updateUI() {
-    currentLevelElem.textContent = currentLevel;
-    currentExpElem.textContent = currentExp;
-    requiredExpElem.textContent = requiredExpPerLevel;
-    updateCategories();
-    taskListElem.innerHTML = '';
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.className = 'task-item';
-        li.textContent = `${task.name} (${task.weight} exp) [${task.category}]`;
         const button = document.createElement('button');
-        button.textContent = 'Complete';
-        button.onclick = () => completeTask(task);
-        li.appendChild(button);
-        taskListElem.appendChild(li);
+        button.className = 'category-button';
+        button.textContent = category;
+        button.onclick = () => {
+            window.location.href = `tasks.html?category=${category}`;
+        };
+        categoriesContainer.appendChild(button);
     });
-}
-
-function completeTask(task) {
-    currentExp += task.weight;
-    tasks.splice(tasks.indexOf(task), 1);
-    updateUI();
-    checkLevelUp();
-}
-
-function checkLevelUp() {
-    if (currentExp >= requiredExpPerLevel) {
-        currentExp -= requiredExpPerLevel;
-        currentLevel += 1;
-        alert(`Congratulations! You have reached Level ${currentLevel}!`);
-        updateUI();
-    }
 }
 
 addCategoryButton.addEventListener('click', () => {
-    const newCategory = newCategoryNameInput.value.trim();
+    const newCategory = newCategoryInput.value.trim();
     if (newCategory && !categories.includes(newCategory)) {
         categories.push(newCategory);
-        newCategoryNameInput.value = '';
+        newCategoryInput.value = '';
         updateCategories();
     } else if (categories.includes(newCategory)) {
-        alert('Category already exists!');
+        alert('Категория уже существует!');
     } else {
-        alert('Please enter a valid category name.');
+        alert('Пожалуйста, введите корректное название категории.');
     }
 });
 
-addTaskButton.addEventListener('click', () => {
-    const category = taskCategorySelect.value;
-    const taskName = taskNameInput.value;
-    const taskWeight = parseInt(taskWeightSelect.value);
-    if (category !== 'default' && taskName && taskWeight) {
-        tasks.push({ name: taskName, weight: taskWeight, category: category });
-        taskNameInput.value = '';
-        updateUI();
-    } else {
-        alert('Please select a category and enter a task name.');
-    }
-});
+// Страница с задачами
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get('category');
+const categoryTitle = document.getElementById('category-title');
+const taskList = document.getElementById('task-list');
 
-// Добавление аватаров
-avatars.forEach(avatar => {
-    const img = document.createElement('img');
-    img.src = avatar.src;
-    img.alt = avatar.name;
-    img.className = 'avatar';
-    img.onclick = () => selectAvatar(avatar);
-    avatarOptions.appendChild(img);
-});
-
-function selectAvatar(avatar) {
-    if (selectedAvatar) {
-        const prevAvatar = document.querySelector('.avatar.selected');
-        if (prevAvatar) {
-            prevAvatar.classList.remove('selected');
-        }
-    }
-    selectedAvatar = avatar;
-    const selectedImg = document.querySelector('.avatar[src="' + avatar.src + '"]');
-    if (selectedImg) {
-        selectedImg.classList.add('selected');
-    }
+if (category) {
+    categoryTitle.textContent = `Tasks for ${category}`;
+    // Здесь можно добавить логику для загрузки задач из хранилища
+    // Например, из localStorage или из базы данных
+    // Для простоты, мы будем использовать статический список задач
+    const tasks = [
+        { name: 'Task 1', completed: false },
+        { name: 'Task 2', completed: false },
+        { name: 'Task 3', completed: false },
+    ];
+    tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = task.completed;
+        checkbox.onchange = () => {
+            task.completed = checkbox.checked;
+            // Добавьте логику для анимации стикера здесь
+            if (task.completed) {
+                // С вероятностью 50% вызвать функцию для показа стикера
+                const random = Math.random();
+                if (random < 0.5) {
+                    showSticker();
+                }
+            }
+        };
+        li.appendChild(checkbox);
+        const span = document.createElement('span');
+        span.textContent = task.name;
+        li.appendChild(span);
+        taskList.appendChild(li);
+    });
 }
+
+// Функция для показа стикера
+function showSticker() {
+    const sticker = document.createElement('div');
+    sticker.className = 'sticker';
+    sticker.style.position = 'fixed';
+    sticker.style.top = '50%';
+    sticker.style.left = '50%';
+    sticker.style.transform = 'translate(-50%, -50%)';
+    sticker.style.width = '100px';
+    sticker.style.height = '100px';
+    sticker.style.backgroundImage = 'url("images/sticker.png")';
+    sticker.style.backgroundSize = 'cover';
+    sticker.style.animation = 'fadeInOut 2s';
+    document.body.appendChild(sticker);
+    setTimeout(() => {
+        sticker.remove();
+    }, 2000);
+}
+
+// Добавьте стили для анимации стикера в styles.css
