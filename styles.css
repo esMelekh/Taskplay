@@ -1,3 +1,4 @@
+/* Общие стили для страницы */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f8ff;
@@ -32,7 +33,7 @@ h1, h2 {
     transition: border 0.3s;
 }
 
-.avatar:hover {
+.avatar.selected {
     border: 2px solid #ff4500;
 }
 
@@ -45,96 +46,14 @@ h1, h2 {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 20px;
 }
 
-#start-button:hover {
+#start-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#start-button:not(:disabled):hover {
     background-color: #e04300;
-}
-
-#category-input {
-    margin-bottom: 20px;
-}
-
-#new-category {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-}
-
-#add-category {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #ff4500;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#add-category:hover {
-    background-color: #e04300;
-}
-
-.category-button {
-    padding: 15px 25px;
-    margin: 10px;
-    font-size: 16px;
-    background-color: #ff8c00;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.category-button:hover {
-    background-color: #e68a00;
-}
-
-.task-item {
-    list-style-type: none;
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.task-item button {
-    padding: 5px 10px;
-    background-color: #ff4500;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.task-item button:hover {
-    background-color: #e04300;
-}
-
-/* Стили для анимации стикера */
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.sticker {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    background-image: url('images/sticker.png');
-    background-size: cover;
-    animation: fadeInOut 2s;
-    pointer-events: none;
-    z-index: 1000;
 }
