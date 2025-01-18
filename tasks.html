@@ -3,16 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks</title>
+    <title>Tasks for </title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="tasks-page">
-        <h1 id="category-title">Tasks for Category</h1>
+        <h1 id="category-title">Tasks for </h1>
         <ul id="task-list">
             <!-- Задачи будут добавлены здесь -->
         </ul>
+        <div id="add-task">
+            <input type="text" id="task-name" placeholder="Enter task name">
+            <button id="add-task-button">Add Task</button>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Получаем параметр категории из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+
+        const categoryTitle = document.getElementById('category-title');
+        const taskList = document.getElementById('task-list');
+        const addTaskButton = document.getElementById('add-task-button');
+        const taskNameInput = document.getElementById('task-name');
+
+        categoryTitle.textContent += category;
+
+        // Загружаем задачи из локального хранилища
+        const tasksURL = localStorage.getItem(`tasks-${category}`);
+        if (tasksURL) {
+            fetch(tasksURL)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const taskListContent = doc.getElementById('task-list').innerHTML;
+                    taskList.innerHTML = taskListContent;
+                });
+        }
+
+        // Логика для добавления задач
+        addTaskButton.addEventListener('click', () => {
+            const taskName = taskNameInput.value.trim();
+            if (taskName) {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                li.appendChild(checkbox);
+                const span = document.createElement('span');
+                span.textContent = taskName;
+                li.appendChild(span);
+                taskList.appendChild(li);
+                taskNameInput.value = '';
+            } else {
+                alert('Please enter a valid task name.');
+            }
+        });
+    </script>
 </body>
 </html>
