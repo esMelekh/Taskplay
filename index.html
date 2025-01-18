@@ -3,45 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Tracker with Levels</title>
+    <title>Welcome to the Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Task Tracker with Levels</h1>
-    <div id="avatar-selection">
-        <h2>Choose Your Avatar</h2>
-        <div id="avatar-options">
-            <!-- Avatar options will be added here -->
+    <div class="welcome-page">
+        <h1>Добро пожаловать в Игру!</h1>
+        <div class="avatar-selection">
+            <h2>Выберите своего персонажа:</h2>
+            <div class="avatar-options">
+                <img src="images/whale.png" alt="Whale" class="avatar" id="whale">
+                <img src="images/lion.png" alt="Lion" class="avatar" id="lion">
+                <img src="images/cat.png" alt="Cat" class="avatar" id="cat">
+                <img src="images/owl.png" alt="Owl" class="avatar" id="owl">
+            </div>
+            <button id="start-button">Начать</button>
         </div>
-    </div>
-    <div id="level-info">
-        <p>Current Level: <span id="current-level">1</span></p>
-        <p>Experience: <span id="current-exp">0</span> / <span id="required-exp">100</span></p>
-    </div>
-    <div id="categories">
-        <h2>Categories</h2>
-        <input type="text" id="new-category-name" placeholder="Enter new category name">
-        <button id="add-category-button">Add Category</button>
-        <select id="category-select">
-            <option value="default">Select a Category</option>
-            <!-- Categories will be added here -->
-        </select>
-    </div>
-    <div id="tasks">
-        <h2>Tasks</h2>
-        <select id="task-category-select">
-            <option value="default">Select a Category</option>
-            <!-- Categories will be added here -->
-        </select>
-        <input type="text" id="task-name" placeholder="Task Name">
-        <select id="task-weight">
-            <option value="1">1 Exp</option>
-            <option value="2">2 Exp</option>
-        </select>
-        <button id="add-task-button">Add Task</button>
-        <ul id="task-list">
-            <!-- Tasks will be added here -->
-        </ul>
     </div>
     <script src="script.js"></script>
 </body>
